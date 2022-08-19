@@ -4,7 +4,7 @@ const connectDatabase = require('./database/index');
 const userRouter = require('./routes/users');
 const shorturlRouter = require('./routes/shorturl');
 
-
+const PORT = process.env.PORT || 8080;
 
 const app = express()
 
@@ -15,6 +15,12 @@ app.use(cors())
 app.use(setReqContext);
 app.use(logger);
 
+app.get('/', (req, res) => {
+    res
+      .status(200)
+      .send('Hello server is running')
+      .end();
+  });
 app.use(userRouter);
 app.use(shorturlRouter);
 
@@ -32,7 +38,7 @@ function setReqContext(req, res, next) {
 }
 
 connectDatabase().then(() => {
-    app.listen(3001, () => {
-        console.log("Server running at http://localhost:3001")
+    app.listen(PORT, () => {
+        console.log(`App listening on port ${PORT}`);
     })
 })
